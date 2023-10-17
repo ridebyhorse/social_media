@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CBC9BCF32AD9A7BB0025AF3E /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC9BCF22AD9A7BB0025AF3E /* ProfileHeaderView.swift */; };
 		CBCE041D2AD85518004AA5F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE041C2AD85518004AA5F0 /* AppDelegate.swift */; };
 		CBCE04212AD85518004AA5F0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE04202AD85518004AA5F0 /* ViewController.swift */; };
 		CBCE04262AD85518004AA5F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBCE04252AD85518004AA5F0 /* Assets.xcassets */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CBC9BCF22AD9A7BB0025AF3E /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		CBCE04192AD85518004AA5F0 /* social_media.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = social_media.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBCE041C2AD85518004AA5F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBCE04202AD85518004AA5F0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -43,6 +45,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CBC9BCF12AD9A7880025AF3E /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				CBC9BCF22AD9A7BB0025AF3E /* ProfileHeaderView.swift */,
+				CBCE04322AD85CFB004AA5F0 /* ProfileViewController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		CBCE04102AD85518004AA5F0 = {
 			isa = PBXGroup;
 			children = (
@@ -62,10 +73,10 @@
 		CBCE041B2AD85518004AA5F0 /* social_media */ = {
 			isa = PBXGroup;
 			children = (
+				CBC9BCF12AD9A7880025AF3E /* Profile */,
 				CBCE04362AD86441004AA5F0 /* Post.swift */,
 				CBCE04382AD870B0004AA5F0 /* InfoViewController.swift */,
 				CBCE04342AD85D73004AA5F0 /* PostViewController.swift */,
-				CBCE04322AD85CFB004AA5F0 /* ProfileViewController.swift */,
 				CBCE04302AD85C58004AA5F0 /* FeedViewController.swift */,
 				CBCE041C2AD85518004AA5F0 /* AppDelegate.swift */,
 				CBCE04202AD85518004AA5F0 /* ViewController.swift */,
@@ -153,6 +164,7 @@
 				CBCE04372AD86441004AA5F0 /* Post.swift in Sources */,
 				CBCE041D2AD85518004AA5F0 /* AppDelegate.swift in Sources */,
 				CBCE04352AD85D73004AA5F0 /* PostViewController.swift in Sources */,
+				CBC9BCF32AD9A7BB0025AF3E /* ProfileHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,16 +20,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let feedNavigationVC = UINavigationController(rootViewController: feedViewController)
         feedNavigationVC.title = "Feed"
         feedNavigationVC.tabBarItem.title = "Feed"
-        feedNavigationVC.tabBarItem.image = UIImage(systemName: "person.fill")
+        feedNavigationVC.tabBarItem.image = UIImage(systemName: "line.horizontal.3.decrease")
         
         let profileViewController = ProfileViewController()
         let profileNavigationVC = UINavigationController(rootViewController: profileViewController)
         profileNavigationVC.title = "Profile"
         profileNavigationVC.tabBarItem.title = "Profile"
-        profileNavigationVC.tabBarItem.image = UIImage(systemName: "line.horizontal.3.decrease")
+        profileNavigationVC.tabBarItem.image = UIImage(systemName: "person.fill")
         
         let tabbarController = UITabBarController()
         tabbarController.viewControllers = [feedNavigationVC, profileNavigationVC]
+        tabbarController.tabBar.backgroundColor = .white
         
         
         window?.rootViewController = tabbarController
