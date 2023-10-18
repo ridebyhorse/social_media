@@ -11,6 +11,17 @@ class FeedViewController: UIViewController {
    
     private let post = Post(title: "Hello, everyone!")
     
+    private let feedButtonsView: UIStackView = {
+        let feedButtonsView = UIStackView()
+        feedButtonsView.translatesAutoresizingMaskIntoConstraints = false
+        feedButtonsView.axis = .vertical
+        feedButtonsView.distribution = .equalSpacing
+        feedButtonsView.spacing = 16
+        feedButtonsView.alignment = .center
+        
+        return feedButtonsView
+    }()
+    
     private let showPostButton: UIButton = {
         let showPostButton = UIButton()
         showPostButton.backgroundColor = .systemRed
@@ -23,17 +34,35 @@ class FeedViewController: UIViewController {
         
         return showPostButton
     }()
+    
+    private let doNothingButton: UIButton = {
+        let doNothingButton = UIButton()
+        doNothingButton.backgroundColor = .systemYellow
+        doNothingButton.setTitleColor(.white, for: .normal)
+        doNothingButton.translatesAutoresizingMaskIntoConstraints = false
+        doNothingButton.addTarget(self, action: #selector(didTapDoNothingButton), for: .touchUpInside)
+        doNothingButton.setTitle("Do Nothing", for: .normal)
+        doNothingButton.layer.cornerRadius = 8
+        doNothingButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        return doNothingButton
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        view.addSubview(showPostButton)
+        view.addSubview(feedButtonsView)
+        feedButtonsView.addArrangedSubview(showPostButton)
+        feedButtonsView.addArrangedSubview(doNothingButton)
+
         
         NSLayoutConstraint.activate([
-            showPostButton.widthAnchor.constraint(equalToConstant: 120),
+            feedButtonsView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            feedButtonsView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             showPostButton.heightAnchor.constraint(equalToConstant: 40),
-            showPostButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            showPostButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor)
+            showPostButton.widthAnchor.constraint(equalToConstant: 120),
+            doNothingButton.heightAnchor.constraint(equalTo: showPostButton.heightAnchor),
+            doNothingButton.widthAnchor.constraint(equalTo: showPostButton.widthAnchor)
         ])
         
     }
@@ -42,6 +71,10 @@ class FeedViewController: UIViewController {
         print("Did tap Show Post button")
         let postViewController = PostViewController(title: post.title)
         navigationController?.pushViewController(postViewController, animated: true)
+    }
+    
+    @objc func didTapDoNothingButton() {
+        print("Did tap Do Nothing button")
     }
     
 }

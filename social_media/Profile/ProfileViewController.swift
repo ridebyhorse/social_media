@@ -20,7 +20,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         
         navigationController?.navigationBar.isHidden = true
-        view.backgroundColor = .systemGray5
+        view.backgroundColor = .systemGray6
         view.addSubview(profileHeader)
         
         NSLayoutConstraint.activate([

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CBC83CD42ADF050500F5EDDB /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC83CD32ADF050500F5EDDB /* LogInViewController.swift */; };
 		CBC9BCF32AD9A7BB0025AF3E /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC9BCF22AD9A7BB0025AF3E /* ProfileHeaderView.swift */; };
 		CBCE041D2AD85518004AA5F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE041C2AD85518004AA5F0 /* AppDelegate.swift */; };
 		CBCE04212AD85518004AA5F0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE04202AD85518004AA5F0 /* ViewController.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CBC83CD32ADF050500F5EDDB /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		CBC9BCF22AD9A7BB0025AF3E /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		CBCE04192AD85518004AA5F0 /* social_media.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = social_media.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBCE041C2AD85518004AA5F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -50,6 +52,7 @@
 			children = (
 				CBC9BCF22AD9A7BB0025AF3E /* ProfileHeaderView.swift */,
 				CBCE04322AD85CFB004AA5F0 /* ProfileViewController.swift */,
+				CBC83CD32ADF050500F5EDDB /* LogInViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 			files = (
 				CBCE04212AD85518004AA5F0 /* ViewController.swift in Sources */,
 				CBCE04312AD85C58004AA5F0 /* FeedViewController.swift in Sources */,
+				CBC83CD42ADF050500F5EDDB /* LogInViewController.swift in Sources */,
 				CBCE04332AD85CFB004AA5F0 /* ProfileViewController.swift in Sources */,
 				CBCE04392AD870B0004AA5F0 /* InfoViewController.swift in Sources */,
 				CBCE04372AD86441004AA5F0 /* Post.swift in Sources */,
