@@ -88,7 +88,7 @@ class ProfileHeaderView: UIView {
         avatarView.clipsToBounds = true
     }
     
-    func setupViews() {
+    private func setupViews() {
         
         self.addSubview(avatarView)
         self.addSubview(nameLabel)
