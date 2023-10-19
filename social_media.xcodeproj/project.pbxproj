@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CBC5C47E2AE1177F00691357 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC5C47D2AE1177F00691357 /* PostTableViewCell.swift */; };
 		CBC83CD42ADF050500F5EDDB /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC83CD32ADF050500F5EDDB /* LogInViewController.swift */; };
 		CBC9BCF32AD9A7BB0025AF3E /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC9BCF22AD9A7BB0025AF3E /* ProfileHeaderView.swift */; };
 		CBCE041D2AD85518004AA5F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE041C2AD85518004AA5F0 /* AppDelegate.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CBC5C47D2AE1177F00691357 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		CBC83CD32ADF050500F5EDDB /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		CBC9BCF22AD9A7BB0025AF3E /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		CBCE04192AD85518004AA5F0 /* social_media.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = social_media.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,6 +49,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CBC5C47F2AE1178700691357 /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				CBCE04362AD86441004AA5F0 /* Post.swift */,
+				CBC5C47D2AE1177F00691357 /* PostTableViewCell.swift */,
+			);
+			path = Post;
+			sourceTree = "<group>";
+		};
 		CBC9BCF12AD9A7880025AF3E /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -77,7 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				CBC9BCF12AD9A7880025AF3E /* Profile */,
-				CBCE04362AD86441004AA5F0 /* Post.swift */,
+				CBC5C47F2AE1178700691357 /* Post */,
 				CBCE04382AD870B0004AA5F0 /* InfoViewController.swift */,
 				CBCE04342AD85D73004AA5F0 /* PostViewController.swift */,
 				CBCE04302AD85C58004AA5F0 /* FeedViewController.swift */,
@@ -167,6 +178,7 @@
 				CBCE04392AD870B0004AA5F0 /* InfoViewController.swift in Sources */,
 				CBCE04372AD86441004AA5F0 /* Post.swift in Sources */,
 				CBCE041D2AD85518004AA5F0 /* AppDelegate.swift in Sources */,
+				CBC5C47E2AE1177F00691357 /* PostTableViewCell.swift in Sources */,
 				CBCE04352AD85D73004AA5F0 /* PostViewController.swift in Sources */,
 				CBC9BCF32AD9A7BB0025AF3E /* ProfileHeaderView.swift in Sources */,
 			);
