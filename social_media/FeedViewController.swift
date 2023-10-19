@@ -8,8 +8,6 @@
 import UIKit
 
 class FeedViewController: UIViewController {
-   
-    private let post = Post(title: "Hello, everyone!")
     
     private let feedButtonsView: UIStackView = {
         let feedButtonsView = UIStackView()
@@ -69,7 +67,7 @@ class FeedViewController: UIViewController {
     
     @objc func didTapShowPostButton() {
         print("Did tap Show Post button")
-        let postViewController = PostViewController(title: post.title)
+        let postViewController = PostViewController(title: "Hello, everyone!")
         navigationController?.pushViewController(postViewController, animated: true)
     }
     

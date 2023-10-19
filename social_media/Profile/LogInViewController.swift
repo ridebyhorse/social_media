@@ -131,7 +131,7 @@ class LogInViewController: UIViewController {
             logo.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 100),
             
             loginFormBackgroundView.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 100),
-            loginFormBackgroundView.heightAnchor.constraint(equalToConstant: 700),
+            loginFormBackgroundView.heightAnchor.constraint(equalToConstant: 100),
             loginFormBackgroundView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             loginFormBackgroundView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 0.9),
             
