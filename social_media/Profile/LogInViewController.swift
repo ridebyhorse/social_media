@@ -24,7 +24,7 @@ class LogInViewController: UIViewController {
     
     private let loginFormBackgroundView: UIView = {
         let loginFormBackgroundView = UIView()
-        loginFormBackgroundView.backgroundColor = .systemGray6
+        loginFormBackgroundView.backgroundColor = .systemGray2
         loginFormBackgroundView.layer.cornerRadius = 10
         loginFormBackgroundView.layer.borderColor = UIColor.lightGray.cgColor
         loginFormBackgroundView.layer.borderWidth = 0.5
