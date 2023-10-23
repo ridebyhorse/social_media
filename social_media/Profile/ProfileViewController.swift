@@ -9,6 +9,17 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
+   private let photos: [UIImage] = {
+        var photos = [UIImage]()
+        for i in 1...20 {
+            if let image = UIImage(named: "\(i)") {
+                photos.append(image)
+            }
+        }
+        
+        return photos
+    }()
+    
     private var posts: [Post] = [
         
         Post(author: "Live Science",
@@ -42,6 +53,7 @@ class ProfileViewController: UIViewController {
     
     fileprivate enum CellReuseIdentifiers: String {
         case profilePost = "ProfilePostReuse"
+        case profilePhoto = "ProfilePhotoReuse"
     }
     
     private let tableView: UITableView = {
@@ -66,8 +78,14 @@ class ProfileViewController: UIViewController {
         view.addSubview(tableView)
         
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: CellReuseIdentifiers.profilePost.rawValue)
+        tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: CellReuseIdentifiers.profilePhoto.rawValue)
         tableView.delegate = self
         tableView.dataSource = self
+        
+        let header = ProfileHeaderView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width, height: 200)))
+        header.backgroundColor = .systemGray2
+        tableView.tableHeaderView = header
+        
         
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -80,30 +98,43 @@ class ProfileViewController: UIViewController {
 
 extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        posts.count
+        if section == 0 {
+            return 1
+        } else {
+            return posts.count
+        }
+        
+    }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        2
     }
  
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: PostTableViewCell = tableView.dequeueReusableCell(withIdentifier: CellReuseIdentifiers.profilePost.rawValue,for: indexPath) as! PostTableViewCell
-        
-        let data = posts[indexPath.row]
-        cell.update(author: data.author, namePicForPost: data.imageName, text: data.description, likesCount: data.likesCount, viewsCount: data.viewsCount)
-        
-        return cell
+        if indexPath.section == 0 {
+            let photoCell: PhotosTableViewCell = tableView.dequeueReusableCell(withIdentifier: CellReuseIdentifiers.profilePhoto.rawValue, for: indexPath) as! PhotosTableViewCell
+            print(photos.count)
+            let photoData = Array(photos.dropLast(6))
+            photoCell.update(photos: photoData)
+            
+            return photoCell
+        } else {
+            let postCell: PostTableViewCell = tableView.dequeueReusableCell(withIdentifier: CellReuseIdentifiers.profilePost.rawValue,for: indexPath) as! PostTableViewCell
+            
+            let postData = posts[indexPath.row]
+            postCell.update(author: postData.author, namePicForPost: postData.imageName, text: postData.description, likesCount: postData.likesCount, viewsCount: postData.viewsCount)
+            
+            return postCell
+        }
     }
 }
 
 extension ProfileViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = ProfileHeaderView()
-        header.backgroundColor = .systemGray6
-        return header
-        
-    }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        200
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            let photosViewController = PhotosViewController(photosCount: photos.count, photosToPresent: photos)
+            navigationController?.pushViewController(photosViewController, animated: true)
+        }
     }
 }
