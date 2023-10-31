@@ -7,7 +7,12 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+protocol ProfileHeaderViewDelegate: AnyObject {
+    func didTapAvatar()
+    func didCloseAvatar()
+}
+
+class ProfileViewController: UIViewController, ProfileHeaderViewDelegate {
     
    private let photos: [UIImage] = {
         var photos = [UIImage]()
@@ -64,6 +69,8 @@ class ProfileViewController: UIViewController {
         return tableView
     }()
     
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
@@ -82,18 +89,57 @@ class ProfileViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        let header = ProfileHeaderView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width, height: 200)))
-        header.backgroundColor = .systemGray2
+        let header = ProfileHeaderView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 200)))
+        header.delegate = self
+        header.backgroundColor = .lightGray
         tableView.tableHeaderView = header
+        tableView.tableHeaderView?.translatesAutoresizingMaskIntoConstraints = false
         
+        if let header = tableView.tableHeaderView {
+            NSLayoutConstraint.activate([
+               
+                header.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
+                header.heightAnchor.constraint(equalToConstant: 200)
+            ])
+        }
         
         NSLayoutConstraint.activate([
+           
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.topAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.topAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+    
+    func didTapAvatar() {
+        print("Did tap avatar in Header")
+        for constraint in tableView.tableHeaderView!.constraints {
+            guard constraint.firstAnchor == tableView.tableHeaderView!.heightAnchor else { continue }
+            constraint.isActive = false
+            
+            break
+        }
+        tableView.tableHeaderView?.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor).isActive = true
+        view.layoutIfNeeded()
+        tableView.isScrollEnabled = false
+        
+      
+    }
+    
+    func didCloseAvatar() {
+        print("Did tap close button in Avatar close up View")
+        for constraint in view.constraints {
+            guard constraint.firstAnchor == tableView.tableHeaderView!.heightAnchor else { continue }
+            constraint.isActive = false
+            
+            break
+        }
+        tableView.tableHeaderView?.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        view.layoutIfNeeded()
+        tableView.isScrollEnabled = true
+    }
+    
 }
 
 extension ProfileViewController: UITableViewDataSource {
@@ -112,7 +158,7 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let photoCell: PhotosTableViewCell = tableView.dequeueReusableCell(withIdentifier: CellReuseIdentifiers.profilePhoto.rawValue, for: indexPath) as! PhotosTableViewCell
-            print(photos.count)
+            
             let photoData = Array(photos.dropLast(6))
             photoCell.update(photos: photoData)
             
