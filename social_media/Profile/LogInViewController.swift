@@ -9,6 +9,8 @@ import UIKit
 
 class LogInViewController: UIViewController {
     
+    private var userService: UserService?
+    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         
@@ -80,7 +82,14 @@ class LogInViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        #if DEBUG
+        view.backgroundColor = .black
+        userService = TestUserService()
+        #else
         view.backgroundColor = .white
+        userService = CurrentUserService()
+        #endif
         navigationController?.navigationBar.isHidden = true
         
         
@@ -158,8 +167,29 @@ class LogInViewController: UIViewController {
     
     @objc func didTapLogInButton() {
         print("Did tap Log In Button")
-        let profileViewController = ProfileViewController()
-        navigationController?.pushViewController(profileViewController, animated: true)
+        print("User trying to log in with \(loginTextField.text == "" ? "no" : loginTextField.text!) login")
+        
+        let user = userService?.checkUser(login: loginTextField.text ?? "")
+        if let userIdentified = user {
+            let profileViewController = ProfileViewController(user: userIdentified)
+            navigationController?.pushViewController(profileViewController, animated: true)
+            print("Successfully logged in")
+        } else {
+            let title: String = {
+                if loginTextField.text == "" {
+                    return "Empty login"
+                } else {
+                    return "No \(loginTextField.text ?? "such") user"
+                }
+            }()
+            print(title)
+            let alertController = UIAlertController(title: title, message: "Please check your login and try again", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Try again", style: .default) { _ in
+                self.loginTextField.text = ""
+            })
+            present(alertController, animated: true)
+        }
+        
     }
     
     // Изменение отступов при появлении клавиатуры

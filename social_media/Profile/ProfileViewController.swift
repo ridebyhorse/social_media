@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import StorageService
+import iOSIntPackage
 
 protocol ProfileHeaderViewDelegate: AnyObject {
     func didTapAvatar()
@@ -13,8 +15,10 @@ protocol ProfileHeaderViewDelegate: AnyObject {
 }
 
 class ProfileViewController: UIViewController, ProfileHeaderViewDelegate {
+   
+    private let user: User?
     
-   private let photos: [UIImage] = {
+    private let photos: [UIImage] = {
         var photos = [UIImage]()
         for i in 1...20 {
             if let image = UIImage(named: "\(i)") {
@@ -70,6 +74,14 @@ class ProfileViewController: UIViewController, ProfileHeaderViewDelegate {
     }()
     
    
+    init(user: User?) {
+        self.user = user
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,12 +100,14 @@ class ProfileViewController: UIViewController, ProfileHeaderViewDelegate {
         tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: CellReuseIdentifiers.profilePhoto.rawValue)
         tableView.delegate = self
         tableView.dataSource = self
+        if let user {
+            let header = ProfileHeaderView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 200)), user: user)
+            header.delegate = self
+            header.backgroundColor = .lightGray
+            tableView.tableHeaderView = header
+            tableView.tableHeaderView?.translatesAutoresizingMaskIntoConstraints = false
+        }
         
-        let header = ProfileHeaderView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 200)))
-        header.delegate = self
-        header.backgroundColor = .lightGray
-        tableView.tableHeaderView = header
-        tableView.tableHeaderView?.translatesAutoresizingMaskIntoConstraints = false
         
         if let header = tableView.tableHeaderView {
             NSLayoutConstraint.activate([
@@ -120,6 +134,7 @@ class ProfileViewController: UIViewController, ProfileHeaderViewDelegate {
             
             break
         }
+        
         tableView.tableHeaderView?.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor).isActive = true
         view.layoutIfNeeded()
         tableView.isScrollEnabled = false
@@ -167,7 +182,8 @@ extension ProfileViewController: UITableViewDataSource {
             let postCell: PostTableViewCell = tableView.dequeueReusableCell(withIdentifier: CellReuseIdentifiers.profilePost.rawValue,for: indexPath) as! PostTableViewCell
             
             let postData = posts[indexPath.row]
-            postCell.update(author: postData.author, namePicForPost: postData.imageName, text: postData.description, likesCount: postData.likesCount, viewsCount: postData.viewsCount)
+            let filter = ColorFilter.allCases[Int.random(in: 0..<ColorFilter.allCases.count)]
+            postCell.update(author: postData.author, namePicForPost: postData.imageName, text: postData.description, likesCount: postData.likesCount, viewsCount: postData.viewsCount, filter: filter)
             
             return postCell
         }
