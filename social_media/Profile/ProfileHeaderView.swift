@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class ProfileHeaderView: UIView {
     
@@ -13,7 +14,6 @@ class ProfileHeaderView: UIView {
     
     private let avatarView: UIImageView = {
         let avatarView = UIImageView()
-        avatarView.image = UIImage(named: "Avatar")
         avatarView.layer.borderColor = UIColor.white.cgColor
         avatarView.layer.borderWidth = 2
         avatarView.contentMode = .scaleAspectFill
@@ -23,7 +23,6 @@ class ProfileHeaderView: UIView {
     
     private let ava: UIImageView = {
         let ava = UIImageView()
-        ava.image = UIImage(named: "Avatar")
         ava.layer.borderColor = UIColor.white.cgColor
         ava.layer.borderWidth = 2
         ava.contentMode = .scaleAspectFill
@@ -50,7 +49,6 @@ class ProfileHeaderView: UIView {
     
     private let nameLabel: UILabel = {
         let nameLabel = UILabel()
-        nameLabel.text = "Sponge Bob"
         nameLabel.textColor = .black
         nameLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         
@@ -59,7 +57,6 @@ class ProfileHeaderView: UIView {
     
     private let statusLabel: UILabel = {
         let statusLabel = UILabel()
-        statusLabel.text = ""
         statusLabel.textColor = .black
         statusLabel.alpha = 0.5
         statusLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
@@ -70,7 +67,7 @@ class ProfileHeaderView: UIView {
     
     private let setStatusButton: UIButton = {
         let setStatusButton = UIButton()
-        setStatusButton.setTitle("Set status", for: .normal)
+        setStatusButton.setTitle("Change status", for: .normal)
         setStatusButton.titleLabel?.textColor = .white
         setStatusButton.backgroundColor = .systemBlue
         setStatusButton.layer.cornerRadius = 8
@@ -95,14 +92,19 @@ class ProfileHeaderView: UIView {
     
     private let setStatusTextField: UITextField = {
         let setStatusTextField = UITextField()
-        setStatusTextField.placeholder = "Type here sth to set status"
+        setStatusTextField.placeholder = "Type sth to change status..."
         setStatusTextField.textColor = .black
         setStatusTextField.font = .systemFont(ofSize: 14, weight: .regular)
         
         return setStatusTextField
     }()
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, user: User) {
+        nameLabel.text = user.fullName
+        statusLabel.text = user.status
+        avatarView.image = user.avatar
+        ava.image = user.avatar
+        
         super.init(frame: frame)
         setupViews()
     }
@@ -141,44 +143,52 @@ class ProfileHeaderView: UIView {
         
         addSubview(ava)
         
-        NSLayoutConstraint.activate([
-            
-            
-            avatarView.widthAnchor.constraint(equalToConstant: 110),
-            avatarView.heightAnchor.constraint(equalTo: avatarView.widthAnchor),
-            avatarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            avatarView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            
-            nameLabel.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: 16),
-            nameLabel.topAnchor.constraint(equalTo: avatarView.topAnchor, constant: 8),
-            nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-            
-            statusLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            statusLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-            statusLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
-            
-            textFieldBackgroundView.bottomAnchor.constraint(equalTo: avatarView.bottomAnchor, constant: -8),
-            textFieldBackgroundView.heightAnchor.constraint(equalToConstant: 30),
-            textFieldBackgroundView.leadingAnchor.constraint(equalTo: statusLabel.leadingAnchor),
-            textFieldBackgroundView.trailingAnchor.constraint(equalTo: statusLabel.trailingAnchor),
-            
-            setStatusTextField.leadingAnchor.constraint(equalTo: textFieldBackgroundView.leadingAnchor, constant: 7),
-            setStatusTextField.trailingAnchor.constraint(equalTo: textFieldBackgroundView.trailingAnchor, constant: -12),
-            setStatusTextField.topAnchor.constraint(equalTo: textFieldBackgroundView.topAnchor, constant: 5),
-            
-            setStatusButton.topAnchor.constraint(equalTo: avatarView.bottomAnchor, constant: 16),
-            setStatusButton.leadingAnchor.constraint(equalTo: avatarView.leadingAnchor),
-            setStatusButton.trailingAnchor.constraint(equalTo: textFieldBackgroundView.trailingAnchor),
-            setStatusButton.heightAnchor.constraint(equalToConstant: 40),
-            
-            avatarCloseUpView.widthAnchor.constraint(equalTo: widthAnchor),
-            avatarCloseUpView.heightAnchor.constraint(equalTo: heightAnchor),
-            
-            closeAvatarButton.topAnchor.constraint(equalTo: avatarView.topAnchor),
-            closeAvatarButton.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor)
-        ])
+        avatarView.snp.makeConstraints {
+            $0.width.height.equalTo(110)
+            $0.top.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(24)
+        }
         
+        nameLabel.snp.makeConstraints {
+            $0.top.equalTo(avatarView).offset(8)
+            $0.leading.equalTo(avatarView.snp.trailing).offset(16)
+            $0.trailing.equalToSuperview().offset(-24)
+        }
         
+        statusLabel.snp.makeConstraints {
+            $0.top.equalTo(nameLabel.snp.bottom).offset(8)
+            $0.leading.trailing.equalTo(nameLabel)
+        }
+        
+        textFieldBackgroundView.snp.makeConstraints {
+            $0.height.equalTo(30)
+            $0.leading.trailing.equalTo(statusLabel)
+            $0.bottom.equalTo(avatarView).inset(8)
+        }
+        
+        setStatusTextField.snp.makeConstraints {
+            $0.top.equalTo(textFieldBackgroundView).offset(5)
+            $0.leading.equalTo(textFieldBackgroundView).offset(7)
+            $0.trailing.equalTo(textFieldBackgroundView).inset(12)
+        }
+        
+        setStatusButton.snp.makeConstraints {
+            $0.height.equalTo(40)
+            $0.top.equalTo(avatarView.snp.bottom).offset(16)
+            $0.leading.equalTo(avatarView)
+            $0.trailing.equalTo(textFieldBackgroundView)
+        }
+        
+        avatarCloseUpView.snp.makeConstraints {
+            $0.width.height.equalToSuperview()
+        }
+        
+        closeAvatarButton.snp.makeConstraints {
+            $0.top.equalTo(avatarView)
+            $0.trailing.equalTo(nameLabel)
+        }
+        
+    
     }
     
     @objc func didTapSetStatusButton() {
@@ -192,27 +202,6 @@ class ProfileHeaderView: UIView {
         }
         
         setStatusTextField.text = ""
-    }
-    
-    @objc func didTapCloseAvatar() {
-        
-        print("Did tap Close Avatar Button")
-        self.layoutIfNeeded()
-        closeAvatarButton.alpha = 0
-
-        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.2) {
-            
-            print("Close avatar animation")
-            self.delegate?.didCloseAvatar()
-            self.avatarCloseUpView.alpha = 0
-            self.ava.center = self.avatarView.center
-            self.ava.bounds = self.avatarView.bounds
-            self.ava.layer.cornerRadius = self.avatarView.layer.cornerRadius
-            self.ava.layer.borderWidth = self.avatarView.layer.borderWidth
-        }
-        
-        avatarView.alpha = 1
-        ava.alpha = 0
     }
     
     @objc func didTapAvatar(_ gesture: UITapGestureRecognizer) {
@@ -239,6 +228,27 @@ class ProfileHeaderView: UIView {
             self.closeAvatarButton.alpha = 1
         }
             
+    }
+    
+    @objc func didTapCloseAvatar() {
+        
+        print("Did tap Close Avatar Button")
+        closeAvatarButton.alpha = 0
+        
+        UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseInOut, animations: {
+            print("Close avatar animation")
+            self.delegate?.didCloseAvatar()
+            self.avatarCloseUpView.alpha = 0
+            self.ava.center = self.avatarView.center
+            self.ava.bounds = self.avatarView.bounds
+            self.ava.layer.cornerRadius = self.avatarView.layer.cornerRadius
+            self.ava.layer.borderWidth = self.avatarView.layer.borderWidth
+        }) { _ in
+            self.layoutIfNeeded()
+            self.avatarView.alpha = 1
+            self.ava.alpha = 0
+        }
+        
     }
     
 }

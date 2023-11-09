@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import iOSIntPackage
+
 
 class PostTableViewCell: UITableViewCell {
     
@@ -103,15 +105,22 @@ class PostTableViewCell: UITableViewCell {
         ])
     }
     
-    func update(author: String, namePicForPost: String, text: String, likesCount: Int, viewsCount: Int) {
+    func update(author: String, namePicForPost: String, text: String, likesCount: Int, viewsCount: Int, filter: ColorFilter) {
         authorLabel.text = author
         if let image = UIImage(named: namePicForPost) {
-            imagePost.image = image
+            let processor = ImageProcessor()
+            processor.processImage(sourceImage: image, filter: filter) {result in
+                self.imagePost.image = result
+                print("Applied filter \(filter) for \(namePicForPost) image")
+            }
         }
         textDescriptionPost.text = text
         likesLabel.text = "Likes: \(likesCount)"
         viewsLabel.text = "Views: \(viewsCount)"
     }
     
+    private func addFiltersToPictures(image: UIImage) {
+        
+    }
 
 }
