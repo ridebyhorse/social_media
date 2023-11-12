@@ -23,6 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         feedNavigationVC.tabBarItem.image = UIImage(systemName: "line.horizontal.3.decrease")
         
         let loginViewController = LogInViewController()
+        let loginInspectorFactory = MyLoginFactory()
+        loginViewController.loginDelegate = loginInspectorFactory.makeLoginInspector()
         let profileNavigationVC = UINavigationController(rootViewController: loginViewController)
         profileNavigationVC.title = "Profile"
         profileNavigationVC.tabBarItem.title = "Profile"

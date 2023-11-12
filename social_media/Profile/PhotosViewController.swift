@@ -6,11 +6,14 @@
 //
 
 import UIKit
+import iOSIntPackage
 
 class PhotosViewController: UIViewController {
     
-    private var photosCount = 0
+    private var imagePublisher: ImagePublisherFacade
+    
     private var photosToPresent = [UIImage]()
+    private var imagesFromPublisher = [UIImage]()
     
     fileprivate enum CellReuseIdentifiers: String {
         case photoCollection = "PhotoCollectionReuse"
@@ -24,9 +27,10 @@ class PhotosViewController: UIViewController {
         return collectionView
     }()
     
-    init(photosCount: Int, photosToPresent: [UIImage]) {
-        self.photosCount = photosCount
+    init(photosToPresent: [UIImage]) {
         self.photosToPresent = photosToPresent
+        imagePublisher = ImagePublisherFacade()
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -38,6 +42,9 @@ class PhotosViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = false
         navigationItem.title = "Photo Gallery"
+        imagePublisher.subscribe(self)
+        print("Subscribe to Image Publisher")
+        imagePublisher.addImagesWithTimer(time: 0.5, repeat: photosToPresent.count, userImages: photosToPresent)
 
         setupViews()
     }
@@ -82,16 +89,29 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
 
 extension PhotosViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photosCount
+        return imagesFromPublisher.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: PhotosCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellReuseIdentifiers.photoCollection.rawValue,for: indexPath) as! PhotosCollectionViewCell
         
-        let photoData = photosToPresent[indexPath.row]
+        let photoData = imagesFromPublisher[indexPath.row]
         cell.update(image: photoData)
         
         return cell
+    }
+    
+    
+}
+
+extension PhotosViewController: ImageLibrarySubscriber {
+    func receive(images: [UIImage]) {
+        imagesFromPublisher = images
+        collectionView.reloadData()
+        if imagesFromPublisher.count == photosToPresent.count {
+            imagePublisher.removeSubscription(for: self)
+            print("Unsubscribe from Image Publisher")
+        }
     }
     
     
