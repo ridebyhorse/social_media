@@ -10,9 +10,9 @@ import UIKit
 
 class TestUserService: UserService {
     
-    private var user: User = User(login: "underTheSea", fullName: "Patrick Star", status: "Don't Touch Me, I'm Sterile", avatar: UIImage(named: "Avatar_test")!)
+    private var user: User = User(login: "underTheSea", fullName: "Patrick Star", status: "Don't touch me, I'm sterile", avatar: UIImage(named: "Avatar_test")!)
     
-    func checkUser(login: String) -> User? {
+    func ckeckUser(login: String) -> User? {
         if user.login == login {
             return user
         }

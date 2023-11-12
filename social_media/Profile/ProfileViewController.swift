@@ -15,7 +15,7 @@ protocol ProfileHeaderViewDelegate: AnyObject {
 }
 
 class ProfileViewController: UIViewController, ProfileHeaderViewDelegate {
-   
+
     private let user: User?
     
     private let photos: [UIImage] = {
@@ -195,7 +195,7 @@ extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            let photosViewController = PhotosViewController(photosCount: photos.count, photosToPresent: photos)
+            let photosViewController = PhotosViewController(photosToPresent: photos)
             navigationController?.pushViewController(photosViewController, animated: true)
         }
     }

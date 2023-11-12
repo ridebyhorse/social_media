@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol LoginViewControllerDelegate {
+    func check(login: String, password: String) -> Bool
+}
+
 class LogInViewController: UIViewController {
+    
+    var loginDelegate: LoginViewControllerDelegate?
     
     private var userService: UserService?
     
@@ -167,25 +173,39 @@ class LogInViewController: UIViewController {
     
     @objc func didTapLogInButton() {
         print("Did tap Log In Button")
-        print("User trying to log in with \(loginTextField.text == "" ? "no" : loginTextField.text!) login")
+        let loginInput: String = loginTextField.text != nil ? loginTextField.text! : ""
+        let passwordInput: String = passwordTextField.text != nil ? passwordTextField.text! : ""
+        print("User trying to log in with \(loginInput == "" ? "no" : loginInput) login")
+        let correct: Bool = {
+            if let answer = loginDelegate?.check(login: loginInput, password: passwordInput) {
+                return answer
+            } else {
+                return false
+            }
+        }()
         
-        let user = userService?.checkUser(login: loginTextField.text ?? "")
-        if let userIdentified = user {
-            let profileViewController = ProfileViewController(user: userIdentified)
-            navigationController?.pushViewController(profileViewController, animated: true)
-            print("Successfully logged in")
+        if correct {
+            print("Correct login and password")
+            let user = userService?.ckeckUser(login: loginInput)
+            if let userIdentified = user {
+                let profileViewController = ProfileViewController(user: userIdentified)
+                navigationController?.pushViewController(profileViewController, animated: true)
+                print("Successfully logged in")
+            } else {
+                let alertController = UIAlertController(title: "Cant'find profile data for \(loginInput)", message: "Something went wrong, please, try to log in again", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                    self.loginTextField.text = ""
+                    self.passwordTextField.text = ""
+                })
+                present(alertController, animated: true)
+            }
         } else {
-            let title: String = {
-                if loginTextField.text == "" {
-                    return "Empty login"
-                } else {
-                    return "No \(loginTextField.text ?? "such") user"
-                }
-            }()
-            print(title)
-            let alertController = UIAlertController(title: title, message: "Please check your login and try again", preferredStyle: .alert)
+            print("Incorrect login and password")
+            let title: String = loginInput == "" || passwordInput == "" ? "Empty field" : "Wrong password or login"
+            let alertController = UIAlertController(title: title, message: "Please check your login and passworg and try again", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Try again", style: .default) { _ in
                 self.loginTextField.text = ""
+                self.passwordTextField.text = ""
             })
             present(alertController, animated: true)
         }

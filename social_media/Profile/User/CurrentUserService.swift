@@ -12,7 +12,7 @@ class CurrentUserService: UserService {
     
     private var user: User = User(login: "pineapple", fullName: "Sponge Bob", status: "Are you ready, kids?", avatar: UIImage(named: "Avatar")!)
     
-    func checkUser(login: String) -> User? {
+    func ckeckUser(login: String) -> User? {
         if user.login == login {
             return user
         }
