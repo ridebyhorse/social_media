@@ -9,6 +9,10 @@ import UIKit
 
 class PostViewController: UIViewController {
     
+    weak var coordinator: Coordinator?
+    
+    var showInfo: (() -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .cyan
@@ -27,8 +31,7 @@ class PostViewController: UIViewController {
     
     @objc func didTapInfoItem() {
         print("Did Tap Info item")
-        let infoViewController = InfoViewController()
-        present(infoViewController, animated: true)
+        showInfo?()
     }
 
 }
