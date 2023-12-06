@@ -13,6 +13,10 @@ protocol LoginViewControllerDelegate {
 
 class LogInViewController: UIViewController {
     
+    weak var coordinator: Coordinator?
+    
+    var didLoggedIn: ((User) -> Void)?
+    
     var loginDelegate: LoginViewControllerDelegate?
     
     private var userService: UserService?
@@ -101,7 +105,7 @@ class LogInViewController: UIViewController {
         
         setupViews()
     }
-    
+    // MARK: kdov
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // подписаться на уведомления
@@ -188,8 +192,7 @@ class LogInViewController: UIViewController {
             print("Correct login and password")
             let user = userService?.ckeckUser(login: loginInput)
             if let userIdentified = user {
-                let profileViewController = ProfileViewController(user: userIdentified)
-                navigationController?.pushViewController(profileViewController, animated: true)
+                didLoggedIn?(userIdentified)
                 print("Successfully logged in")
             } else {
                 let alertController = UIAlertController(title: "Cant'find profile data for \(loginInput)", message: "Something went wrong, please, try to log in again", preferredStyle: .alert)

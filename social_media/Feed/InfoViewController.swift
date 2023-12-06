@@ -9,15 +9,13 @@ import UIKit
 
 class InfoViewController: UIViewController {
     
-    private let showAlertButton: UIButton = {
-        let showAlertButton = UIButton()
-        showAlertButton.backgroundColor = .white
-        showAlertButton.setTitleColor(.black, for: .normal)
-        showAlertButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        showAlertButton.setTitle("Show alert", for: .normal)
-        showAlertButton.layer.cornerRadius = 8
-        showAlertButton.translatesAutoresizingMaskIntoConstraints = false
+    weak var coordinator: Coordinator?
+    
+    private lazy var showAlertButton: CustomButton = {
+        let showAlertButton = CustomButton(title: "Show alert", color: .white, titleColor: .black)
+        showAlertButton.onTap = {
+            self.showAlert()
+        }
         
         return showAlertButton
     }()
@@ -26,9 +24,13 @@ class InfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemPink
-        showAlertButton.addTarget(self, action: #selector(didTapShowAlertButton), for: .touchUpInside)
+        setup()
         
+    }
+    
+    private func setup() {
         view.addSubview(showAlertButton)
+        showAlertButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             showAlertButton.widthAnchor.constraint(equalToConstant: 120),
@@ -38,7 +40,7 @@ class InfoViewController: UIViewController {
         ])
     }
     
-    @objc func didTapShowAlertButton() {
+    private func showAlert() {
         print("Did tap Show Alert button")
         let alertViewController = UIAlertController(title: "Hello there", message: "Welcome to my app", preferredStyle: .alert)
         alertViewController.addAction(UIAlertAction(title: "Hi!", style: .default){_ in

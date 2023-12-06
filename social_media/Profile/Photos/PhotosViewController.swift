@@ -10,6 +10,8 @@ import iOSIntPackage
 
 class PhotosViewController: UIViewController {
     
+    weak var coordinator: Coordinator?
+    
     private var imagePublisher: ImagePublisherFacade
     
     private var photosToPresent = [UIImage]()
