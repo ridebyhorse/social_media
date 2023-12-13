@@ -8,7 +8,14 @@
 import UIKit
 
 protocol LoginViewControllerDelegate {
-    func check(login: String, password: String) -> Bool
+    func checkLogin(login: String) -> Bool
+    func checkPassword(password: String) -> Bool
+    func generateNewPassword(of: Int)
+}
+
+enum LogInError: Error {
+    case incorrectInput
+    case noDataForUser
 }
 
 class LogInViewController: UIViewController {
@@ -21,20 +28,20 @@ class LogInViewController: UIViewController {
     
     private var userService: UserService?
     
-    private let scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         
         return scrollView
     }()
     
-    private let logo: UIImageView = {
+    private lazy var logo: UIImageView = {
         let logo = UIImageView()
         logo.image = UIImage(named: "AppIcon")
         
         return logo
     }()
     
-    private let loginFormBackgroundView: UIView = {
+    private lazy var loginFormBackgroundView: UIView = {
         let loginFormBackgroundView = UIView()
         loginFormBackgroundView.backgroundColor = .systemGray2
         loginFormBackgroundView.layer.cornerRadius = 10
@@ -44,14 +51,14 @@ class LogInViewController: UIViewController {
         return loginFormBackgroundView
     }()
     
-    private let lineSeparatorLoginForm: UIView = {
+    private lazy var lineSeparatorLoginForm: UIView = {
         let lineSeparatorLoginForm = UIView()
         lineSeparatorLoginForm.backgroundColor = .lightGray
         
         return lineSeparatorLoginForm
     }()
     
-    private let loginTextField: UITextField = {
+    private lazy var loginTextField: UITextField = {
         let loginTextField = UITextField()
         loginTextField.placeholder = "Email or phone"
         loginTextField.textColor = .black
@@ -61,7 +68,7 @@ class LogInViewController: UIViewController {
         return loginTextField
     }()
     
-    private let passwordTextField: UITextField = {
+    private lazy var passwordTextField: UITextField = {
         let passwordTextField = UITextField()
         passwordTextField.placeholder = "Password"
         passwordTextField.textColor = .black
@@ -72,7 +79,7 @@ class LogInViewController: UIViewController {
         return passwordTextField
     }()
     
-    private let logInButton: UIButton = {
+    private lazy var logInButton: UIButton = {
         let logInButton = UIButton()
         logInButton.setTitle("Log In", for: .normal)
         logInButton.backgroundColor = UIColor(named: "AccentColor")
@@ -89,6 +96,26 @@ class LogInViewController: UIViewController {
         
         return logInButton
     }()
+    
+    private lazy var guessPasswordButton: UIButton = {
+        let guessPasswordButton = UIButton()
+        guessPasswordButton.setTitle("Generate password and guess", for: .normal)
+        guessPasswordButton.backgroundColor = .purple
+        guessPasswordButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+        guessPasswordButton.titleLabel?.textColor = .white
+        guessPasswordButton.layer.cornerRadius = 10
+        guessPasswordButton.addTarget(self, action: #selector(didTapPasswordButton), for: .touchUpInside)
+        
+        return guessPasswordButton
+    }()
+    
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = UIColor(named: "AccentColor")
+        
+        return activityIndicator
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,8 +131,9 @@ class LogInViewController: UIViewController {
         
         
         setupViews()
+        
     }
-    // MARK: kdov
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // подписаться на уведомления
@@ -128,8 +156,8 @@ class LogInViewController: UIViewController {
         scrollView.addSubview(loginTextField)
         scrollView.addSubview(passwordTextField)
         scrollView.addSubview(logInButton)
-        
-        
+        scrollView.addSubview(guessPasswordButton)
+        scrollView.addSubview(activityIndicator)
         
         for view in self.view.subviews {
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -171,46 +199,128 @@ class LogInViewController: UIViewController {
             logInButton.leadingAnchor.constraint(equalTo: loginFormBackgroundView.leadingAnchor),
             logInButton.trailingAnchor.constraint(equalTo: loginFormBackgroundView.trailingAnchor),
             logInButton.topAnchor.constraint(equalTo: loginFormBackgroundView.bottomAnchor, constant: 16),
-            logInButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -100)
+            logInButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -100),
+            guessPasswordButton.topAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 32),
+            guessPasswordButton.leadingAnchor.constraint(equalTo: logInButton.leadingAnchor, constant: 16),
+            guessPasswordButton.trailingAnchor.constraint(equalTo: logInButton.trailingAnchor, constant: -16),
+            guessPasswordButton.heightAnchor.constraint(equalTo: logInButton.heightAnchor),
+            activityIndicator.heightAnchor.constraint(equalTo: passwordTextField.heightAnchor, multiplier: 0.8),
+            activityIndicator.widthAnchor.constraint(equalTo: activityIndicator.heightAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor),
+            activityIndicator.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor, constant: -8)
         ])
+        
+        
     }
     
-    @objc func didTapLogInButton() {
+    
+    @objc private func didTapLogInButton() {
         print("Did tap Log In Button")
         let loginInput: String = loginTextField.text != nil ? loginTextField.text! : ""
         let passwordInput: String = passwordTextField.text != nil ? passwordTextField.text! : ""
         print("User trying to log in with \(loginInput == "" ? "no" : loginInput) login")
         let correct: Bool = {
-            if let answer = loginDelegate?.check(login: loginInput, password: passwordInput) {
-                return answer
+            if let answerLogin = loginDelegate?.checkLogin(login: loginInput) {
+                if let answerPassword = loginDelegate?.checkPassword(password: passwordInput) {
+                    return answerLogin && answerPassword
+                } else {
+                    return false
+                }
             } else {
                 return false
             }
         }()
         
+        var user: User?
+        userService?.checkUser(login: loginInput) { result in
+            switch result {
+            case .success(let userInput):
+                user = userInput
+            case .failure(let error):
+                print("\(String(describing: error)) No data for user \(loginInput)")
+                user = nil
+            }
+        }
+        
+        do {
+            try logIn(correct: correct, user: user)
+        } catch LogInError.incorrectInput {
+            handleLogInError(error: .incorrectInput)
+        } catch LogInError.noDataForUser {
+            handleLogInError(error: .noDataForUser)
+        } catch {
+            print("Something went wrong")
+        }
+        
+        
+    }
+    
+    private func logIn(correct: Bool, user: User?) throws {
+        
         if correct {
             print("Correct login and password")
-            let user = userService?.ckeckUser(login: loginInput)
             if let userIdentified = user {
                 didLoggedIn?(userIdentified)
                 print("Successfully logged in")
             } else {
-                let alertController = UIAlertController(title: "Cant'find profile data for \(loginInput)", message: "Something went wrong, please, try to log in again", preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-                    self.loginTextField.text = ""
-                    self.passwordTextField.text = ""
-                })
-                present(alertController, animated: true)
+                throw LogInError.noDataForUser
             }
+            
         } else {
-            print("Incorrect login and password")
-            let title: String = loginInput == "" || passwordInput == "" ? "Empty field" : "Wrong password or login"
-            let alertController = UIAlertController(title: title, message: "Please check your login and passworg and try again", preferredStyle: .alert)
+            throw LogInError.incorrectInput
+        }
+        
+    }
+    
+    private func handleLogInError(error: LogInError) {
+        switch error {
+        case .incorrectInput:
+            print("Incorrect login or password")
+            let alertController = UIAlertController(title: "Incorrect password or login", message: "Please check your login and passworg and try again", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Try again", style: .default) { _ in
-                self.loginTextField.text = ""
-                self.passwordTextField.text = ""
+                self.loginTextField.text = nil
+                self.passwordTextField.text = nil
             })
             present(alertController, animated: true)
+            
+        case .noDataForUser:
+            print("No profile data for login")
+            let loginInput: String = loginTextField.text != nil ? loginTextField.text! : ""
+            let alertController = UIAlertController(title: "Cant'find profile data for \(loginInput)", message: "Something went wrong, please, try to log in again", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                self.loginTextField.text = nil
+                self.passwordTextField.text = nil
+            })
+            present(alertController, animated: true)
+        }
+    }
+    
+    @objc private func didTapPasswordButton(_ sender: UIButton) {
+        
+        print("Did tap Password Button")
+        
+        self.activityIndicator.startAnimating()
+        
+        loginDelegate?.generateNewPassword(of: 4)
+        
+        let operation = LoginOperation(loginDelegate: loginDelegate)
+        operation.didFinishedPasswordGuessing = {
+            let newPassword = $0
+            DispatchQueue.main.async { [weak self] in
+                self?.passwordTextField.isSecureTextEntry = false
+                self?.passwordTextField.text = newPassword
+                self?.activityIndicator.stopAnimating()
+            }
+            
+            
+        }
+        
+        let opQueue = OperationQueue()
+        opQueue.qualityOfService = .userInitiated
+        opQueue.addOperation(operation)
+        
+        operation.completionBlock = {
+            print("Finished password guessing")
         }
         
     }

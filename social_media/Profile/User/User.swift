@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol UserService {
-    func ckeckUser(login: String) -> User?
+    func checkUser(login: String, completion: (Result<User, UserError>) -> Void)
 }
 
 class User {

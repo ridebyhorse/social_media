@@ -58,8 +58,3 @@ class MainCoordinator: Coordinator {
     }
 }
 
-//if childCoordinators.contains(where: feedCoordinator) {
-//    childCoordinators.remove(at: childCoordinators.firstIndex(of: feedCoordinator))
-//    print(childCoordinators)
-//    print("exit")
-//}

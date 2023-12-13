@@ -30,6 +30,10 @@ class ProfileViewController: UIViewController, ProfileHeaderViewDelegate {
     
     private var posts = [Post]()
     
+    private var timer: Timer?
+    
+    private var startedTimeOnline: Date
+    
     fileprivate enum CellReuseIdentifiers: String {
         case profilePost = "ProfilePostReuse"
         case profilePhoto = "ProfilePhotoReuse"
@@ -43,14 +47,27 @@ class ProfileViewController: UIViewController, ProfileHeaderViewDelegate {
         return tableView
     }()
     
-   
     init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
+        startedTimeOnline = .now
         super.init(nibName: nil, bundle: nil)
+        
+        timer = Timer(timeInterval: 5.0, target: self, selector: #selector(updateTimeInHeader), userInfo: nil, repeats: true)
+        guard let timer else { return }
+        RunLoop.current.add(timer, forMode: .common)
+        
+        timer.tolerance = 0.1
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        guard let timer else { return }
+        timer.invalidate()
+        print("Timer \(timer) invalidated")
     }
     
     override func viewDidLoad() {
@@ -117,6 +134,17 @@ class ProfileViewController: UIViewController, ProfileHeaderViewDelegate {
         ])
     }
     
+    @objc private func updateTimeInHeader() {
+
+        if let header = tableView.tableHeaderView {
+            if let head = header as? ProfileHeaderView {
+                let timePassed = Date.now.timeIntervalSince(startedTimeOnline)
+                head.updateTime(time: Int(timePassed))
+            }
+        }
+        
+    }
+    
     func didTapAvatar() {
         print("Did tap avatar in Header")
         for constraint in tableView.tableHeaderView!.constraints {
@@ -179,6 +207,8 @@ extension ProfileViewController: UITableViewDataSource {
             return postCell
         }
     }
+    
+    
 }
 
 extension ProfileViewController: UITableViewDelegate {

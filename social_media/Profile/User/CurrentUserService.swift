@@ -12,11 +12,13 @@ class CurrentUserService: UserService {
     
     private var user: User = User(login: "pineapple", fullName: "Sponge Bob", status: "Are you ready, kids?", avatar: UIImage(named: "Avatar")!)
     
-    func ckeckUser(login: String) -> User? {
+    func checkUser(login: String, completion: (Result<User, UserError>) -> Void) {
         if user.login == login {
-            return user
+            completion(.success(user))
+            
+        } else {
+            completion(.failure(.noData))
         }
-        return nil
     }
     
 }

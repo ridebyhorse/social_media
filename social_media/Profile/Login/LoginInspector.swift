@@ -12,8 +12,14 @@ protocol LoginFactory {
 }
 
 struct LoginInspector: LoginViewControllerDelegate {
-    func check(login: String, password: String) -> Bool {
-        Checker.shared.check(login: login, password: password)
+    func checkLogin(login: String) -> Bool {
+        Checker.shared.checkLogin(login: login)
+    }
+    func checkPassword(password: String) -> Bool {
+        Checker.shared.checkPassword(password: password)
     }
     
+    func generateNewPassword(of numberOfChars: Int) {
+        Checker.shared.generateNewPassword(of: numberOfChars)
+    }
 }

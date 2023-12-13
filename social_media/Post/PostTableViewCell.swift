@@ -119,8 +119,5 @@ class PostTableViewCell: UITableViewCell {
         viewsLabel.text = "Views: \(viewsCount)"
     }
     
-    private func addFiltersToPictures(image: UIImage) {
-        
-    }
 
 }

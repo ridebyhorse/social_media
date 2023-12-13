@@ -12,10 +12,9 @@ class PhotosViewController: UIViewController {
     
     weak var coordinator: Coordinator?
     
-    private var imagePublisher: ImagePublisherFacade
+    private var imageProcessor: ImageProcessor
     
     private var photosToPresent = [UIImage]()
-    private var imagesFromPublisher = [UIImage]()
     
     fileprivate enum CellReuseIdentifiers: String {
         case photoCollection = "PhotoCollectionReuse"
@@ -31,8 +30,7 @@ class PhotosViewController: UIViewController {
     
     init(photosToPresent: [UIImage]) {
         self.photosToPresent = photosToPresent
-        imagePublisher = ImagePublisherFacade()
-        
+        imageProcessor = ImageProcessor()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -44,11 +42,9 @@ class PhotosViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = false
         navigationItem.title = "Photo Gallery"
-        imagePublisher.subscribe(self)
-        print("Subscribe to Image Publisher")
-        imagePublisher.addImagesWithTimer(time: 0.5, repeat: photosToPresent.count, userImages: photosToPresent)
 
         setupViews()
+        applyFilters()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -69,6 +65,24 @@ class PhotosViewController: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+        
+    }
+    
+    private func applyFilters() {
+        let date: Date = .now
+        imageProcessor.processImagesOnThread(sourceImages: photosToPresent, filter: .colorInvert, qos: .background) { filteredPhotos in
+            
+            self.photosToPresent.removeAll()
+            for photo in filteredPhotos {
+                guard let photo else { return }
+                self.photosToPresent.append(UIImage(cgImage: photo))
+                DispatchQueue.main.async { [weak self] in
+                    self?.collectionView.reloadData()
+                }
+            }
+            
+            print("Filter applying took \(-1 * Int(date.timeIntervalSinceNow)) seconds")
+        }
     }
 
 }
@@ -91,29 +105,16 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
 
 extension PhotosViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imagesFromPublisher.count
+        return photosToPresent.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell: PhotosCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: CellReuseIdentifiers.photoCollection.rawValue,for: indexPath) as! PhotosCollectionViewCell
         
-        let photoData = imagesFromPublisher[indexPath.row]
-        cell.update(image: photoData)
+        cell.update(image: photosToPresent[indexPath.row])
         
         return cell
-    }
-    
-    
-}
-
-extension PhotosViewController: ImageLibrarySubscriber {
-    func receive(images: [UIImage]) {
-        imagesFromPublisher = images
-        collectionView.reloadData()
-        if imagesFromPublisher.count == photosToPresent.count {
-            imagePublisher.removeSubscription(for: self)
-            print("Unsubscribe from Image Publisher")
-        }
     }
     
     

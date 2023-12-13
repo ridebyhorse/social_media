@@ -20,7 +20,6 @@ class ProfileViewModel: ProfileViewOutput {
     
     var posts = [Post]() {
         didSet {
-            print("Did recieve new post data")
             onNewDataInput?()
         }
     }

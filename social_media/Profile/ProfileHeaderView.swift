@@ -12,7 +12,7 @@ class ProfileHeaderView: UIView {
     
     weak var delegate: ProfileHeaderViewDelegate?
     
-    private let avatarView: UIImageView = {
+    private lazy var avatarView: UIImageView = {
         let avatarView = UIImageView()
         avatarView.layer.borderColor = UIColor.white.cgColor
         avatarView.layer.borderWidth = 2
@@ -21,7 +21,7 @@ class ProfileHeaderView: UIView {
         return avatarView
     }()
     
-    private let ava: UIImageView = {
+    private lazy var ava: UIImageView = {
         let ava = UIImageView()
         ava.layer.borderColor = UIColor.white.cgColor
         ava.layer.borderWidth = 2
@@ -31,7 +31,7 @@ class ProfileHeaderView: UIView {
         return ava
     }()
     
-    let avatarCloseUpView: UIView = {
+    private lazy var avatarCloseUpView: UIView = {
         let avatarCloseUpView = UIView()
         avatarCloseUpView.backgroundColor = .darkGray
         avatarCloseUpView.alpha = 0
@@ -39,7 +39,7 @@ class ProfileHeaderView: UIView {
         return avatarCloseUpView
     }()
     
-    let closeAvatarButton: UIButton = {
+    private lazy var closeAvatarButton: UIButton = {
         let closeAvatarButton = UIButton(type: .close)
         closeAvatarButton.alpha = 0
         closeAvatarButton.addTarget(self, action: #selector(didTapCloseAvatar), for: .touchUpInside)
@@ -47,7 +47,7 @@ class ProfileHeaderView: UIView {
         return closeAvatarButton
     }()
     
-    private let nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         let nameLabel = UILabel()
         nameLabel.textColor = .black
         nameLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
@@ -55,7 +55,7 @@ class ProfileHeaderView: UIView {
         return nameLabel
     }()
     
-    private let statusLabel: UILabel = {
+    private lazy var statusLabel: UILabel = {
         let statusLabel = UILabel()
         statusLabel.textColor = .black
         statusLabel.alpha = 0.5
@@ -65,7 +65,7 @@ class ProfileHeaderView: UIView {
     }()
     
     
-    private let setStatusButton: UIButton = {
+    private lazy var setStatusButton: UIButton = {
         let setStatusButton = UIButton()
         setStatusButton.setTitle("Change status", for: .normal)
         setStatusButton.titleLabel?.textColor = .white
@@ -80,7 +80,7 @@ class ProfileHeaderView: UIView {
         return setStatusButton
     }()
     
-    private let textFieldBackgroundView: UIView = {
+    private lazy var textFieldBackgroundView: UIView = {
         let textFieldBackgroundView = UIView()
         textFieldBackgroundView.backgroundColor = .white
         textFieldBackgroundView.layer.cornerRadius = 8
@@ -90,7 +90,7 @@ class ProfileHeaderView: UIView {
         return textFieldBackgroundView
     }()
     
-    private let setStatusTextField: UITextField = {
+    private lazy var setStatusTextField: UITextField = {
         let setStatusTextField = UITextField()
         setStatusTextField.placeholder = "Type sth to change status..."
         setStatusTextField.textColor = .black
@@ -99,13 +99,21 @@ class ProfileHeaderView: UIView {
         return setStatusTextField
     }()
     
+    private lazy var timeLabel: UILabel = {
+        let timeLabel = UILabel()
+        timeLabel.textColor = .darkGray
+        timeLabel.font = .systemFont(ofSize: 10, weight: .regular)
+        timeLabel.text = "online"
+        
+        return timeLabel
+    }()
+    
     init(frame: CGRect, user: User) {
+        super.init(frame: frame)
         nameLabel.text = user.fullName
         statusLabel.text = user.status
         avatarView.image = user.avatar
         ava.image = user.avatar
-        
-        super.init(frame: frame)
         setupViews()
     }
     
@@ -123,6 +131,22 @@ class ProfileHeaderView: UIView {
         avatarView.isUserInteractionEnabled = true
         avatarView.addGestureRecognizer(recognizer)
     }
+    
+    func updateTime(time: Int) {
+        if time / 60 == 0 {
+            timeLabel.text = "\(time % 60)s online"
+            layoutIfNeeded()
+            return
+        } else if time / 3600 == 0 {
+            timeLabel.text = "\(time / 60)m \(time % 60)s online"
+            layoutIfNeeded()
+        } else {
+            timeLabel.text = "\(time / 3600)h \(time / 60)m \(time % 60)s online"
+            layoutIfNeeded()
+        }
+        
+        
+    }
   
     
     private func setupViews() {
@@ -135,7 +159,7 @@ class ProfileHeaderView: UIView {
         addSubview(setStatusTextField)
         addSubview(avatarCloseUpView)
         addSubview(closeAvatarButton)
-        
+        addSubview(timeLabel)
 
         for view in self.subviews {
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -188,6 +212,10 @@ class ProfileHeaderView: UIView {
             $0.trailing.equalTo(nameLabel)
         }
         
+        timeLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().inset(24)
+        }
     
     }
     
