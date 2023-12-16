@@ -55,7 +55,6 @@ class ProfileViewController: UIViewController, ProfileHeaderViewDelegate {
         timer = Timer(timeInterval: 5.0, target: self, selector: #selector(updateTimeInHeader), userInfo: nil, repeats: true)
         guard let timer else { return }
         RunLoop.current.add(timer, forMode: .common)
-        
         timer.tolerance = 0.1
         
     }

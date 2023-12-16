@@ -13,6 +13,8 @@ class FeedViewController: UIViewController {
     
     var showPost: (() -> Void)?
     
+    var showAudio: (() -> Void)?
+    
     @objc private let model: FeedModel
     
     private let feedStackView: UIStackView = {
@@ -26,7 +28,7 @@ class FeedViewController: UIViewController {
     }()
     
     private lazy var showPostButton: CustomButton = {
-        let showPostButton = CustomButton(title: "Show post", color: .systemRed, titleColor: .white)
+        let showPostButton = CustomButton(title: "Show videoposts", color: .systemRed, titleColor: .white)
         showPostButton.onTap = {
             self.showPostController()
         }
@@ -35,9 +37,9 @@ class FeedViewController: UIViewController {
     }()
     
     private lazy var doNothingButton: CustomButton = {
-        let doNothingButton = CustomButton(title: "Do nothing", color: .systemYellow, titleColor: .white)
+        let doNothingButton = CustomButton(title: "Show audionotes", color: .systemYellow, titleColor: .white)
         doNothingButton.onTap = {
-            self.doNothing()
+            self.showAudionotes()
         }
         
         return doNothingButton
@@ -109,7 +111,7 @@ class FeedViewController: UIViewController {
             feedStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             feedStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             showPostButton.heightAnchor.constraint(equalToConstant: 40),
-            showPostButton.widthAnchor.constraint(equalToConstant: 120),
+            showPostButton.widthAnchor.constraint(equalToConstant: 180),
             doNothingButton.heightAnchor.constraint(equalTo: showPostButton.heightAnchor),
             doNothingButton.widthAnchor.constraint(equalTo: showPostButton.widthAnchor),
             guessWordTextField.heightAnchor.constraint(equalTo: doNothingButton.heightAnchor),
@@ -134,13 +136,14 @@ class FeedViewController: UIViewController {
     }
     
     private func showPostController() {
-        print("Did tap Show Post button")
+        print("Did tap Show Videoposts button")
         showPost?()
         
     }
     
-    private func doNothing() {
-        print("Did tap Do Nothing button")
+    private func showAudionotes() {
+        print("Did tap Show Audionotes button")
+        showAudio?()
     }
     
     private func checkWord() {

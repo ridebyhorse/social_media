@@ -22,6 +22,8 @@
 		CB7EC70E2AFE3CBA00F09A97 /* LoginFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7EC70D2AFE3CBA00F09A97 /* LoginFactory.swift */; };
 		CBC5C47E2AE1177F00691357 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC5C47D2AE1177F00691357 /* PostTableViewCell.swift */; };
 		CBC83CD42ADF050500F5EDDB /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC83CD32ADF050500F5EDDB /* LogInViewController.swift */; };
+		CBC986492B2CAE4400EC6C78 /* AudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC986482B2CAE4400EC6C78 /* AudioViewController.swift */; };
+		CBC9864B2B2CB81400EC6C78 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC9864A2B2CB81400EC6C78 /* PlayerViewController.swift */; };
 		CBC9BCF32AD9A7BB0025AF3E /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC9BCF22AD9A7BB0025AF3E /* ProfileHeaderView.swift */; };
 		CBCB796B2B270B39008150DC /* Letters.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCB796A2B270B39008150DC /* Letters.swift */; };
 		CBCBA5182AFCE5480027145C /* TestUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCBA5172AFCE5480027145C /* TestUserService.swift */; };
@@ -31,7 +33,7 @@
 		CBCE04312AD85C58004AA5F0 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE04302AD85C58004AA5F0 /* FeedViewController.swift */; };
 		CBCE04332AD85CFB004AA5F0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE04322AD85CFB004AA5F0 /* ProfileViewController.swift */; };
 		CBCE04352AD85D73004AA5F0 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE04342AD85D73004AA5F0 /* PostViewController.swift */; };
-		CBCE04392AD870B0004AA5F0 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE04382AD870B0004AA5F0 /* InfoViewController.swift */; };
+		CBCE04392AD870B0004AA5F0 /* AudioNoteViewConNoroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE04382AD870B0004AA5F0 /* AudioNoteViewConNoroller.swift */; };
 		CBCE83842AE2B57200238330 /* PhotosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE83832AE2B57200238330 /* PhotosTableViewCell.swift */; };
 		CBFA50F72B1649050085DD5E /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFA50F62B1649050085DD5E /* CustomButton.swift */; };
 		CBFA50F92B18DAE40085DD5E /* FeedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFA50F82B18DAE40085DD5E /* FeedModel.swift */; };
@@ -84,6 +86,8 @@
 		CB7EC70D2AFE3CBA00F09A97 /* LoginFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFactory.swift; sourceTree = "<group>"; };
 		CBC5C47D2AE1177F00691357 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		CBC83CD32ADF050500F5EDDB /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		CBC986482B2CAE4400EC6C78 /* AudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioViewController.swift; sourceTree = "<group>"; };
+		CBC9864A2B2CB81400EC6C78 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		CBC9BCF22AD9A7BB0025AF3E /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		CBCB796A2B270B39008150DC /* Letters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Letters.swift; sourceTree = "<group>"; };
 		CBCBA5172AFCE5480027145C /* TestUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUserService.swift; sourceTree = "<group>"; };
@@ -96,7 +100,7 @@
 		CBCE04322AD85CFB004AA5F0 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		CBCE04342AD85D73004AA5F0 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		CBCE04362AD86441004AA5F0 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
-		CBCE04382AD870B0004AA5F0 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		CBCE04382AD870B0004AA5F0 /* AudioNoteViewConNoroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioNoteViewConNoroller.swift; sourceTree = "<group>"; };
 		CBCE83832AE2B57200238330 /* PhotosTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewCell.swift; sourceTree = "<group>"; };
 		CBFA50F62B1649050085DD5E /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		CBFA50F82B18DAE40085DD5E /* FeedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedModel.swift; sourceTree = "<group>"; };
@@ -232,8 +236,10 @@
 			children = (
 				CBCE04302AD85C58004AA5F0 /* FeedViewController.swift */,
 				CBFA50F82B18DAE40085DD5E /* FeedModel.swift */,
-				CBCE04382AD870B0004AA5F0 /* InfoViewController.swift */,
 				CBCE04342AD85D73004AA5F0 /* PostViewController.swift */,
+				CBC9864A2B2CB81400EC6C78 /* PlayerViewController.swift */,
+				CBC986482B2CAE4400EC6C78 /* AudioViewController.swift */,
+				CBCE04382AD870B0004AA5F0 /* AudioNoteViewConNoroller.swift */,
 				CBFA50F62B1649050085DD5E /* CustomButton.swift */,
 			);
 			path = Feed;
@@ -443,13 +449,15 @@
 				CBCE04312AD85C58004AA5F0 /* FeedViewController.swift in Sources */,
 				CBC83CD42ADF050500F5EDDB /* LogInViewController.swift in Sources */,
 				CBFA50FE2B19FDAE0085DD5E /* MainCoordinator.swift in Sources */,
+				CBC986492B2CAE4400EC6C78 /* AudioViewController.swift in Sources */,
 				CBCE83842AE2B57200238330 /* PhotosTableViewCell.swift in Sources */,
+				CBC9864B2B2CB81400EC6C78 /* PlayerViewController.swift in Sources */,
 				CB463E472AE6EAFB007ED666 /* PhotosCollectionViewCell.swift in Sources */,
 				CBFA50F92B18DAE40085DD5E /* FeedModel.swift in Sources */,
 				CB7EC70B2AFE28A700F09A97 /* LoginInspector.swift in Sources */,
 				CBCE04332AD85CFB004AA5F0 /* ProfileViewController.swift in Sources */,
 				CB56A4972B274C60005B8A48 /* LoginOperation.swift in Sources */,
-				CBCE04392AD870B0004AA5F0 /* InfoViewController.swift in Sources */,
+				CBCE04392AD870B0004AA5F0 /* AudioNoteViewConNoroller.swift in Sources */,
 				CBFA51022B1A085F0085DD5E /* FeedCoordinator.swift in Sources */,
 				CBCBA5182AFCE5480027145C /* TestUserService.swift in Sources */,
 				CB48370A2AFBFB1A00425EF0 /* CurrentUserService.swift in Sources */,
