@@ -25,6 +25,8 @@ class FeedCoordinator: Coordinator {
     
     var onComplete: (() -> Void)?
     
+    private var audioNoteViewControllerDelegate: AudioNoteViewControllerDelegate?
+    
     init(input: Input, parentCoordinator: MainCoordinator, navigation: UINavigationController) {
         self.input = input
         self.parentCoordinator = parentCoordinator
@@ -44,23 +46,42 @@ class FeedCoordinator: Coordinator {
     private func startFeedFlow() {
         let feedViewController = FeedViewController(model: FeedModel())
         feedViewController.coordinator = self
-        feedViewController.showPost = presentPostModule
+        feedViewController.showPost = presentVideoPostModule
+        feedViewController.showAudio = presentAudioModule
         
         navigation.pushViewController(feedViewController, animated: true)
     }
     
-    private func presentPostModule() {
-        let postViewController = PostViewController(title: "Hello, everyone!")
+    private func presentVideoPostModule() {
+        let postViewController = PostViewController(title: "Recent videoposts")
         postViewController.coordinator = self
-        postViewController.showInfo = presentInfoModule
+        postViewController.showVideoPlayer = { url in
+            self.presentVideoPlayerModule(url: url)
+        }
         
         navigation.pushViewController(postViewController, animated: true)
     }
     
-    private func presentInfoModule() {
-        let infoViewController = InfoViewController()
-        infoViewController.coordinator = self
+    private func presentAudioModule() {
+        let audioViewController = AudioViewController(title: "Audionotes")
+        audioViewController.makeNote = presentAudioNoteModule
+        audioNoteViewControllerDelegate = audioViewController
+        navigation.pushViewController(audioViewController, animated: true)
+    }
+    
+    private func presentAudioNoteModule() {
+        let audioNoteViewController = AudioNoteViewController()
+        audioNoteViewController.coordinator = self
+        guard let audioNoteViewControllerDelegate else { return }
+        audioNoteViewController.delegate = audioNoteViewControllerDelegate
         
-        navigation.present(infoViewController, animated: true)
+        navigation.present(audioNoteViewController, animated: true)
+    }
+    
+    private func presentVideoPlayerModule(url: URL) {
+        let videoPlayerViewController = PlayerViewController(url: url)
+        
+        navigation.pushViewController(videoPlayerViewController, animated: true)
+        
     }
 }
