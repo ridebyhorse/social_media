@@ -72,6 +72,9 @@ class FeedCoordinator: Coordinator {
     private func presentAudioNoteModule() {
         let audioNoteViewController = AudioNoteViewController()
         audioNoteViewController.coordinator = self
+        audioNoteViewController.onComplete = {
+            self.navigation.dismiss(animated: true)
+        }
         guard let audioNoteViewControllerDelegate else { return }
         audioNoteViewController.delegate = audioNoteViewControllerDelegate
         
