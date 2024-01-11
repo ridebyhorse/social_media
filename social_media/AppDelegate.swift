@@ -13,6 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var coordinator: MainCoordinator?
+    var appConfiguration: AppConfiguration2?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -21,6 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.rootViewController = coordinator?.tabbarController
         window?.makeKeyAndVisible()
+        
+        appConfiguration = AppConfiguration2.allCases.randomElement()
+        if let appConfiguration {
+            NetworkService.request(for: appConfiguration)
+        }
         
         let audioSession = AVAudioSession.sharedInstance()
         do {

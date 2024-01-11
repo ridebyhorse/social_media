@@ -189,7 +189,6 @@ class AudioNoteViewController: UIViewController {
         
         recordBackground.isHidden = true
         
-        
         recorder?.stop()
         recorder = nil
 
